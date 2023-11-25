@@ -1,0 +1,84 @@
+---
+- name: Applying  Apply the authorization policies for the broker and console.
+  command: "kubectl -n {{ namespace }} apply -f resource/{{ inventory_hostname }}/artemis-security.yaml"
+  register: out
+  failed_when: out.failed and 'already exists' not in out.stderr_lines[0]
+  when: inventory_hostname == 'dc1'
+
+- name: Applying  Apply the authorization policies for the broker and console.
+  command: "kubectl -n {{ namespace }} apply -f ./resource/{{ inventory_hostname }}/artemis-security.yaml"
+  register: out
+  failed_when: out.failed and 'already exists' not in out.stderr_lines[0]
+  when: inventory_hostname == 'dc2'
+
+- name: Retrieve the generated admin password for the dc2 cluster
+  shell: >
+    kubectl get secret -n dc2 security-properties-broker-prop-module -o=jsonpath='{.data.admin}' | base64 -d
+  register: admin_password_dc2
+  when: inventory_hostname == 'dc1'
+
+- name: Apply artemis-broker.yaml with substituted environment variables for {{ inventory_hostname }}
+  shell: |
+    env \
+    DC2_HOST='artemis-broker-amqp-${STATEFUL_SET_ORDINAL}-svc-dc2' \
+    DC2_PORT=5672 \
+    DC2_USER=admin \
+    DC2_PASS='{{ admin_password_dc2.stdout }}' \
+    bash -c 'cat ./resource/{{ inventory_hostname }}/artemis-broker.yaml | envsubst | kubectl apply -n {{ namespace }} -f-'
+  args:
+    executable: /bin/bash
+  when: inventory_hostname == 'dc1'
+
+- name: Apply the addresses to be created on the brokers on {{ inventory_hostname }}
+  command: "kubectl -n {{ namespace }} apply -f resource/{{ inventory_hostname }}/artemis-addresses.yaml"
+  register: out
+  failed_when: out.failed and 'already exists' not in out.stderr_lines[0]
+  when: inventory_hostname == 'dc1'
+
+- name: Expose the core services to the Skupper network for {{ inventory_hostname }}
+  command: >
+    oc -n dc1 annotate service artemis-broker-core-{{ item }}-svc "skupper.io/address=artemis-broker-core-{{ item }}-svc-dc1" "skupper.io/port=61616" "skupper.io/proxy=tcp"
+  loop: "{{ range(0, 1) }}"
+  when: inventory_hostname == 'dc1'
+
+- name: Expose the amqp services to the Skupper network for {{ inventory_hostname }}
+  command: >
+    oc -n dc1 annotate service artemis-broker-amqp-{{ item }}-svc "skupper.io/address=artemis-broker-amqp-{{ item }}-svc-dc1" "skupper.io/port=5672" "skupper.io/proxy=tcp"
+  loop: "{{ range(0, 1) }}"
+  when: inventory_hostname == 'dc1'
+
+- name: Retrieve the generated admin password for the DC1 cluster
+  shell: >
+    kubectl get secret -n dc1 security-properties-broker-prop-module -o=jsonpath='{.data.admin}' | base64 -d
+  register: admin_password_dc1
+  when: inventory_hostname == 'dc2'
+
+- name: Apply artemis-broker.yaml with substituted environment variables for {{ inventory_hostname }}
+  shell: |
+    env \
+    DC1_HOST='artemis-broker-amqp-${STATEFUL_SET_ORDINAL}-svc-dc1' \
+    DC1_PORT=5672 \
+    DC1_USER=admin \
+    DC2_PASS='{{ admin_password_dc1.stdout }}' \
+    bash -c 'cat ./resource/{{ inventory_hostname }}/artemis-broker.yaml | envsubst | oc apply -n {{ inventory_hostname }} -f-'
+  args:
+    executable: /bin/bash
+  when: inventory_hostname == 'dc2'
+
+- name: Apply the addresses to be created on the brokers on {{ inventory_hostname }}.
+  command: "kubectl -n {{ namespace }} apply -f resource/{{ inventory_hostname }}/artemis-addresses.yaml"
+  register: out
+  failed_when: out.failed and 'already exists' not in out.stderr_lines[0]
+  when: inventory_hostname == 'dc2'
+
+- name: Expose the core services to the Skupper network for {{ inventory_hostname }}
+  command: >
+    oc -n dc2 annotate service artemis-broker-core-{{ item }}-svc "skupper.io/address=artemis-broker-core-{{ item }}-svc-dc2" "skupper.io/port=61616" "skupper.io/proxy=tcp"
+  loop: "{{ range(0, 1) }}"
+  when: inventory_hostname == 'dc2'
+
+- name: Expose the amqp services to the Skupper network for {{ inventory_hostname }}
+  command: >
+    oc -n dc2 annotate service artemis-broker-amqp-{{ item }}-svc "skupper.io/address=artemis-broker-amqp-{{ item }}-svc-dc2" "skupper.io/port=5672" "skupper.io/proxy=tcp"
+  loop: "{{ range(0, 1) }}"
+  when: inventory_hostname == 'dc2'

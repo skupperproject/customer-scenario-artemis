@@ -1,0 +1,13 @@
+---
+- name: Initialize a gateway and connect it to the Skupper network
+  command: skupper gateway init --type podman
+
+- name: Expose the AMQP services from the Skupper network to the local machine
+  command: "{{ item }}"
+  with_items:
+    - skupper gateway forward artemis-broker-amqp-0-svc-dc1 5672
+    - skupper gateway forward artemis-broker-amqp-0-svc-dc2 5672
+
+- name: Get the port mappings for the exposed services
+  command: skupper gateway status
+  register: skupper_status

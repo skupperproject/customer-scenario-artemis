@@ -1,0 +1,21 @@
+all:
+  children:
+    public:
+      hosts:
+        dc1:
+          ansible_connection: local
+          namespace: dc1
+          init:
+            siteName: dc1
+            enableServiceSync: "false"
+            enableFlowCollector: "true"
+            enableConsole: "true"
+            consolePassword: "admin"
+        dc2:
+          ansible_connection: local
+          namespace: dc2
+          init:
+            siteName: dc2
+            enableServiceSync: "false"
+          links:
+            - host: dc1

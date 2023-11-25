@@ -1,0 +1,5 @@
+---
+- name: Creating the projects
+  command: "kubectl create namespace {{ namespace }}"
+  register: out
+  failed_when: out.failed and 'already exists' not in out.stderr_lines[0]
