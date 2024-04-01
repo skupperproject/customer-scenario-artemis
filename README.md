@@ -12,6 +12,10 @@ The Artemis Customer Scenario is designed to showcase a realistic use case of me
 
 These components are interconnected using [Skupper.io](https://skupper.io/) for secure, site-to-site communication across Kubernetes namespaces or clusters, highlighting the potential for cross-cloud messaging solutions.
 
+## Architecture Diagram
+
+![Artemis Customer Scenario Architecture](diagram.svg)
+
 ## Prerequisites
 
 Before you begin, ensure you have the following prerequisites met:
@@ -58,6 +62,10 @@ This project employs a diverse set of technologies, including:
 - `requirements.yml`: Specifies the Ansible collections needed for the project.
 - `roles/`: Contains Ansible roles for each project component, including Kubernetes setup, Artemis operator configuration, and more.
 
+
+## Skupper Configuration
+
+Both sites, the sender and receiver, are connected to the broker site using Skupper. The Skupper configuration is defined in the `roles/skupper` role, which sets up the necessary connections between the sites. The service created by the broker deployment is exposed to the sender and receiver sites, allowing them to communicate securely using Skupper. Please check the inventory.yml files for details, since we are using Skupper Ansible to deploy the environment.
 ## Running the Project
 
 Ensure your Kubernetes cluster is up and running before starting. Install the required Ansible collections and execute the main playbook to deploy the Artemis Customer Scenario.
