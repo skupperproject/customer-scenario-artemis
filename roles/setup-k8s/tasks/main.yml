@@ -1,0 +1,10 @@
+---
+- name: Create the k8s namespaces for the children hostnames from the inventory children > public > hosts
+  k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: "{{ item }}"
+  with_items: "{{ groups['public'] }}"

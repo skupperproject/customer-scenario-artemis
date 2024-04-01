@@ -1,0 +1,4 @@
+---
+# vars file for broker
+broker_files:
+  - https://raw.githubusercontent.com/artemiscloud/activemq-artemis-operator/main/config/crs/broker_activemqartemis_cr.yaml

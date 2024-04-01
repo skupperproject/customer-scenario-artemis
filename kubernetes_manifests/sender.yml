@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: continuous-amqp-sender
+  namespace: artemis-sender-site
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: continuous-amqp-sender
+  template:
+    metadata:
+      labels:
+        app: continuous-amqp-sender
+    spec:
+      containers:
+      - name: amqp-client
+        image: quay.io/rhmessagingqe/cli-java:latest
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            while :; do
+                cli-qpid-sender -b amqp://artemis-acceptor:5672 -a myQ --log-msgs dict 
+            done
+

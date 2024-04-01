@@ -1,0 +1,7 @@
+---
+- name: Creating the client deployment
+  kubernetes.core.k8s:
+    state: present
+    namespace: artemis-sender-site
+    src: "{{ playbook_dir }}/kubernetes_manifests/sender.yml"
+

@@ -1,0 +1,32 @@
+---
+# tasks file for broker
+- name: Installing ActiveMQ Broker
+  kubernetes.core.k8s:
+    src: "{{ item }}"
+    namespace: "artemis-broker-site" 
+    state: present
+  loop: "{{ broker_files }}"
+  loop_control:
+    loop_var: item
+- name: Wait for ActiveMQ Broker to be ready
+  kubernetes.core.k8s_info:
+    namespace: "artemis-broker-site"
+    kind: "Pod"
+    label_selectors:
+      - "name=activemq-artemis-operator"
+  register: broker_pod_info
+  until: broker_pod_info.resources | length > 0 and broker_pod_info.resources[0].status.phase == "Running"
+  retries: 10
+  delay: 10
+- name: Expose Artemis Service using Skupper
+  command: >
+    skupper -n artemis-broker-site expose service ex-aao-amqp-0-svc --port 5672 --protocol tcp --address artemis-acceptor
+  register: skupper_expose_result
+  check_mode: no
+  changed_when: "'exposed service' in skupper_expose_result.stdout"
+
+- name: Ensure Skupper expose command succeeded
+  fail:
+    msg: "Skupper expose command failed."
+  when: skupper_expose_result.rc != 0
+
