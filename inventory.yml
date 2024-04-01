@@ -2,20 +2,28 @@ all:
   children:
     public:
       hosts:
-        dc1:
+        artemis-sender-site:
           ansible_connection: local
-          namespace: dc1
+          namespace: artemis-sender-site
           init:
-            siteName: dc1
-            enableServiceSync: "false"
+            siteName: artemis-sender-site
+            enableServiceSync: "true"
+        artemis-broker-site:
+          ansible_connection: local
+          namespace: artemis-broker-site
+          init:
+            siteName: artemis-broker-site
+            enableServiceSync: "true"
             enableFlowCollector: "true"
             enableConsole: "true"
             consolePassword: "admin"
-        dc2:
-          ansible_connection: local
-          namespace: dc2
-          init:
-            siteName: dc2
-            enableServiceSync: "false"
+            enableServiceSync: "true"
           links:
-            - host: dc1
+            - host: artemis-sender-site
+            - host: artemis-receiver-site
+        artemis-receiver-site:
+          ansible_connection: local
+          namespace: artemis-receiver-site
+          init:
+            siteName: artemis-receiver-site
+            enableServiceSync: "true"

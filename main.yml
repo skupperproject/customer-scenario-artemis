@@ -1,0 +1,14 @@
+---
+# Main yaml file
+- hosts: all
+  gather_facts: false
+  collections:
+    - kubernetes.core
+    - skupper.network
+  roles:
+    - role: setup-k8s
+    - role: skupper
+    - role: artemis-operator
+    - role: broker
+    - role: sender
+    - role: receiver

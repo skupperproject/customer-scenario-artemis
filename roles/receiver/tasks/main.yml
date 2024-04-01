@@ -1,0 +1,7 @@
+---
+- name: Creating the receiver deployment
+  kubernetes.core.k8s:
+    state: present
+    namespace: artemis-receiver-site
+    src: "{{ playbook_dir }}/kubernetes_manifests/receiver.yml"
+
