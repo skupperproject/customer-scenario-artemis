@@ -14,12 +14,19 @@ spec:
         app: amqp-message-receiver
     spec:
       containers:
-      - name: amqp-client
-        image: quay.io/rhmessagingqe/cli-java:latest
-        command: ["/bin/sh", "-c"]
-        args:
-          - |
-            while :; do
-              cli-qpid-receiver -b amqp://artemis-acceptor:5672 -a myQ --log-msgs dict
-            done
-
+        - name: amqp-client
+          image: quay.io/rhmessagingqe/cli-java:latest
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+            limits:
+              memory: "64Mi"
+              cpu: "200m"
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              mkdir -p /var/log/amqp-client
+              while :; do
+                cli-qpid-receiver -b amqp://artemis-acceptor:5672 -c 1000 -a myQ --log-msgs dict >> /var/log/amqp-client/receiver.log 2>&1
+              done

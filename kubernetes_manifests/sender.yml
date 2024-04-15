@@ -16,10 +16,17 @@ spec:
       containers:
       - name: amqp-client
         image: quay.io/rhmessagingqe/cli-java:latest
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "500m"
+          limits:
+            memory: "64Mi"
+            cpu: "500m"
         command: ["/bin/sh", "-c"]
         args:
           - |
             while :; do
-                cli-qpid-sender -b amqp://artemis-acceptor:5672 -a myQ --log-msgs dict 
+                cli-qpid-sender -b amqp://artemis-acceptor:5672 -c 1000  -a myQ --log-msgs dict 
             done
 

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: amqp-log-server
+  namespace: artemis-receiver-site
+spec:
+  selector:
+    app: amqp-message-receiver
+  ports:
+    - protocol: TCP
+      port: 81
+      targetPort: 8080
+
