@@ -35,8 +35,15 @@ To deploy the Artemis Customer Scenario, follow these steps:
     ```shell
     ansible-galaxy collection install -r requirements.yml
     ```
+2. ** Install pip dependencies**:
 
-2. **Deploy with Ansible**:
+    Install the required Python packages using the following command:
+
+    ```shell
+    pip3 install kubernetes
+    ```
+
+3. **Deploy with Ansible**:
 
     Launch the deployment by running the main Ansible playbook. This command sets up the Kubernetes namespaces, deploys the Artemis Broker, and establishes Skupper.io links:
 

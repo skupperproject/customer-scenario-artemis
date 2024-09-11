@@ -26,7 +26,6 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
-              mkdir -p /var/log/amqp-client
               while :; do
-                cli-qpid-receiver -b amqp://artemis-acceptor:5672 -c 1000 -a myQ --log-msgs dict >> /var/log/amqp-client/receiver.log 2>&1
+                cli-qpid-receiver -b amqp://artemis-acceptor:5672 -c 1000 -a myQ --log-msgs dict
               done

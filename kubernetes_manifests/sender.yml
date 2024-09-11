@@ -18,11 +18,11 @@ spec:
         image: quay.io/rhmessagingqe/cli-java:latest
         resources:
           requests:
-            memory: "64Mi"
-            cpu: "500m"
+            memory: "32Mi"
+            cpu: "100m"
           limits:
-            memory: "64Mi"
-            cpu: "500m"
+            memory: "128Mi"
+            cpu: "200m"
         command: ["/bin/sh", "-c"]
         args:
           - |
