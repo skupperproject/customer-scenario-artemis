@@ -1,6 +1,6 @@
 all:
   vars:
-    skupper_option_kubeconfig: "/home/{{ lookup('env','USER') }}/.kube/config"
+    skupper_option_kubeconfig: "{{ ansible_env.HOME }}/.kube/config"
   children:
     public:
       hosts:
