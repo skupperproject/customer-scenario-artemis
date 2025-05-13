@@ -1,0 +1,87 @@
+
+# 2025-05-13 16:33:22.684705
++N
+
+# 2025-05-13 16:33:28.567857
++/add *
+
+# 2025-05-13 16:34:05.150757
++Using conventional commit messages with one line, create a new branch called development.
+
+# 2025-05-13 16:34:12.044986
++/run git checkout -b development
+
+# 2025-05-13 16:34:12.045009
++/run git checkout -b development
+
+# 2025-05-13 16:34:16.526622
++N
+
+# 2025-05-13 16:34:51.636307
++Using conventional commit messages with one line, create a command to add the delete files.
+
+# 2025-05-13 16:35:24.119854
++N
+
+# 2025-05-13 16:35:57.017489
++Using conventional commit messages with one line, create a command to add the delete files with the deletion commit message
+
+# 2025-05-13 16:36:09.166573
++/run git add kubernetes_manifests/metrics-server.yml kubernetes_manifests/receiver.yml kubernetes_manifests/sender.yml roles/artemis-operator/tasks/main.yml roles/artemis-operator/vars/main.yml roles/broker/tasks/main.yml roles/broker/vars/main.yml roles/receiver/tasks/main.yml roles/receiver/vars/main.yml roles/sender/tasks/main.yml roles/sender/vars/main.yml roles/setup-k8s/tasks/main.yml roles/setup-k8s/vars/main.yml diagram.svg logs/process-logs.py logs/Dockerfile LICENSE.txt README.md requirements.yml ansible.cfg inventory.yml main.yml
+
+# 2025-05-13 16:36:09.166606
++/run git add kubernetes_manifests/metrics-server.yml kubernetes_manifests/receiver.yml kubernetes_manifests/sender.yml roles/artemis-operator/tasks/main.yml roles/artemis-operator/vars/main.yml roles/broker/tasks/main.yml roles/broker/vars/main.yml roles/receiver/tasks/main.yml roles/receiver/vars/main.yml roles/sender/tasks/main.yml roles/sender/vars/main.yml roles/setup-k8s/tasks/main.yml roles/setup-k8s/vars/main.yml diagram.svg logs/process-logs.py logs/Dockerfile LICENSE.txt README.md requirements.yml ansible.cfg inventory.yml main.yml
+
+# 2025-05-13 16:36:14.352192
++/run git commit -m "feat: remove legacy files before restructuring"
+
+# 2025-05-13 16:36:14.352214
++/run git commit -m "feat: remove legacy files before restructuring"
+
+# 2025-05-13 16:36:18.479878
++n
+
+# 2025-05-13 16:37:27.445303
++Now, create a commit message for all the changes.
+
+# 2025-05-13 16:37:40.522324
++N
+
+# 2025-05-13 16:39:32.798563
++change the inventory.yml and set the `skupper_option_kubeconfig` to use the ansible user with the ~/.kube/config default value.
+
+# 2025-05-13 16:39:48.062719
++/und
+
+# 2025-05-13 16:39:52.014859
++/undo
+
+# 2025-05-13 16:40:05.836834
++change the inventory.yml and set the `skupper_option_kubeconfig` to use the ansible user with the ~/.kube/config default value. But using ansible syntaxt to get the user
+
+# 2025-05-13 16:40:56.816768
++/undo
+
+# 2025-05-13 16:43:40.358770
++change the inventory.yml and set the `skupper_option_kubeconfig` to use the ansible user with the ~/.kube/config default value. But using ansible syntaxt to get the user lookup('env','USER')
+
+# 2025-05-13 16:44:17.730302
++commit this change at the inventory.yml file
+
+# 2025-05-13 16:44:27.441249
++/run git add inventory.yml
+
+# 2025-05-13 16:44:27.441311
++/run git add inventory.yml
+
+# 2025-05-13 16:44:28.294458
++/run git commit -m "refactor: use ansible_env.HOME variable for kubeconfig path"
+
+# 2025-05-13 16:44:28.294524
++/run git commit -m "refactor: use ansible_env.HOME variable for kubeconfig path"
+
+# 2025-05-13 16:45:10.257073
++N
+
+# 2025-05-13 16:45:17.892265
++/exit
