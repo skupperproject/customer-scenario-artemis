@@ -4,4 +4,3 @@
     state: present
     namespace: artemis-sender-site
     src: "{{ playbook_dir }}/kubernetes_manifests/sender.yml"
-
