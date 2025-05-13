@@ -2,7 +2,7 @@
 - name: Installing the operator applying the yaml file.
   kubernetes.core.k8s:
     src: "{{ item }}"
-    namespace: "artemis-broker-site" 
+    namespace: "artemis-broker-site"
     state: present
   loop: "{{ artemis_operator_yamls }}"
   loop_control:

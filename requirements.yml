@@ -1,3 +1,3 @@
 collections:
-  - skupper.network
+  - skupper.skupper
   - kubernetes.core

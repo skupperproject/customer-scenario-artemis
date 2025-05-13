@@ -4,10 +4,10 @@
   gather_facts: false
   collections:
     - kubernetes.core
-    - skupper.network
+    - skupper.skupper
   roles:
     - role: setup-k8s
-    - role: skupper
+    - role: skupper_setup
     - role: artemis-operator
     - role: broker
     - role: sender

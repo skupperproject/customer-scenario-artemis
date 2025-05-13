@@ -35,7 +35,8 @@ To deploy the Artemis Customer Scenario, follow these steps:
     ```shell
     ansible-galaxy collection install -r requirements.yml
     ```
-2. ** Install pip dependencies**:
+
+2. **Install pip dependencies**:
 
     Install the required Python packages using the following command:
 
@@ -49,6 +50,12 @@ To deploy the Artemis Customer Scenario, follow these steps:
 
     ```shell
     ansible-playbook main.yml
+    ```
+
+    If you want to use a custom kubeconfig file, you can set the `KUBECONFIG` environment variable:
+
+    ```shell
+    ansible-playbook main.yml -e "skupper_option_kubeconfig=/path/to/your/kubeconfig"
     ```
 
 ## Technology Stack
@@ -69,10 +76,10 @@ This project employs a diverse set of technologies, including:
 - `requirements.yml`: Specifies the Ansible collections needed for the project.
 - `roles/`: Contains Ansible roles for each project component, including Kubernetes setup, Artemis operator configuration, and more.
 
-
 ## Skupper Configuration
 
 Both sites, the sender and receiver, are connected to the broker site using Skupper. The Skupper configuration is defined in the `roles/skupper` role, which sets up the necessary connections between the sites. The service created by the broker deployment is exposed to the sender and receiver sites, allowing them to communicate securely using Skupper. Please check the inventory.yml files for details, since we are using Skupper Ansible to deploy the environment.
+
 ## Running the Project
 
 Ensure your Kubernetes cluster is up and running before starting. Install the required Ansible collections and execute the main playbook to deploy the Artemis Customer Scenario.
@@ -80,4 +87,3 @@ Ensure your Kubernetes cluster is up and running before starting. Install the re
 ## Contributing
 
 We welcome contributions to improve the Artemis Customer Scenario. Please see the contributing guidelines for more details.
-

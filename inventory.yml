@@ -1,29 +1,39 @@
 all:
+  vars:
+    skupper_option_kubeconfig: "{{ ansible_env.HOME }}/.kube/config"
   children:
     public:
       hosts:
         artemis-sender-site:
           ansible_connection: local
-          namespace: artemis-sender-site
-          init:
-            siteName: artemis-sender-site
-            enableServiceSync: "true"
-        artemis-broker-site:
-          ansible_connection: local
-          namespace: artemis-broker-site
-          init:
-            siteName: artemis-broker-site
-            enableServiceSync: "true"
-            enableFlowCollector: "true"
-            enableConsole: "true"
-            consolePassword: "admin"
-            enableServiceSync: "true"
-          links:
-            - host: artemis-sender-site
-            - host: artemis-receiver-site
+          skupper_option_namespace: artemis-sender-site
+          skupper_init_site_name: artemis-sender-site
+          skupper_service_list:
+            - name: artemis-acceptor
+              ports: [5672]
+              protocol: tcp
         artemis-receiver-site:
           ansible_connection: local
-          namespace: artemis-receiver-site
-          init:
-            siteName: artemis-receiver-site
-            enableServiceSync: "true"
+          skupper_option_namespace: artemis-receiver-site
+          skupper_init_site_name: artemis-receiver-site
+          skupper_service_list:
+            - name: artemis-acceptor
+              ports: [5672]
+              protocol: tcp
+        artemis-broker-site:
+          ansible_connection: local
+          skupper_option_namespace: artemis-broker-site
+          skupper_init_site_name: artemis-broker-site
+          skupper_init_enable_flow_collector: "true"
+          skupper_init_enable_console: "true"
+          skupper_init_console_passowrd: "admin"
+          skupper_link_list:
+            - host: artemis-sender-site
+            - host: artemis-receiver-site
+          skupper_service_list:
+            - name: artemis-acceptor
+              ports: [5672]
+              protocol: tcp
+              targets:
+                - type: service
+                  name: ex-aao-amqp-0-svc
